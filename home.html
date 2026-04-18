@@ -13,7 +13,6 @@
     .icon-link{display:inline-flex;align-items:center;cursor:pointer;}
     .sku small{display:block;color:#6b7280;font-weight:500;margin-top:2px;}
 
-    /* ✅ thumb เป็น <img> + object-fit */
     .thumb{
       width:160px;
       height:160px;
@@ -364,7 +363,20 @@
     });
 
     document.getElementById("btnFeedback").addEventListener("click", () => {
-      alert("ขอบคุณสำหรับคำติชม! (เดโม)");
+
+      // ดึง user จาก localStorage (แบบที่คุณใช้ทั้งโปรเจกต์)
+      const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+
+      const member_code = currentUser?.member_code;
+
+      if (!member_code) {
+        alert("ไม่พบผู้ใช้งาน กรุณา login ใหม่");
+        window.location.href = "index.html";
+        return;
+      }
+
+      // ไปหน้า A/B survey พร้อมส่ง member_code
+      window.location.href = `ab_survey.html?member_code=${encodeURIComponent(member_code)}`;
     });
   });
 </script>
